@@ -20,12 +20,21 @@ namespace Net5Demos.Controllers
         }
 
         // GET: Students
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["CurrentFilter"] = searchString;
+
             var students = from s in _context.Students
                            select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.LastName.Contains(searchString)
+                                       || s.FirstName.Contains(searchString));
+            }
+
             switch (sortOrder)
             {
                 case "name_desc":
@@ -41,6 +50,7 @@ namespace Net5Demos.Controllers
                     students = students.OrderBy(s => s.LastName);
                     break;
             }
+
             return View(await students.AsNoTracking().ToListAsync());
         }
 
@@ -96,7 +106,7 @@ namespace Net5Demos.Controllers
             }
 
             return View(student);
-         }
+        }
 
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
