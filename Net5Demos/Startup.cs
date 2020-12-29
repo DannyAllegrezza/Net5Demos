@@ -27,7 +27,9 @@ namespace Net5Demos
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDbContext<SchoolDbContext>(options =>
-                 options.UseSqlite(Configuration.GetConnectionString("SchoolDbContext")));
+                 options
+                 .LogTo(Console.WriteLine)
+                 .UseSqlite(Configuration.GetConnectionString("SchoolDbContext")));;
 
             services.AddControllersWithViews();
         }
