@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Net5Demos.Data;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Net5Demos
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDbContext<SchoolDbContext>(options =>
                  options
-                 .LogTo(Console.WriteLine)
+                 .LogTo(Console.WriteLine, LogLevel.Information)
                  .UseSqlite(Configuration.GetConnectionString("SchoolDbContext")));;
 
             services.AddControllersWithViews();
