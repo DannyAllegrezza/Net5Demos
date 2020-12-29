@@ -13,9 +13,10 @@ namespace Net5Demos.Utils
 
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {
-            PageIndex = PageIndex;
+            PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            AddRange(items);
+
+            this.AddRange(items);
         }
 
         public bool HasPreviousPage
@@ -38,7 +39,6 @@ namespace Net5Demos.Utils
         {
             var count = await source.CountAsync();
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
-
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }
     }
